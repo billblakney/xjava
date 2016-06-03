@@ -1,6 +1,10 @@
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+/**
+ * http://www.tutorialspoint.com/java/java_regular_expressions.htm
+ */
 public class XMatcher
 {
    public static void main(String[] args)
