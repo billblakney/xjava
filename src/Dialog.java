@@ -56,6 +56,8 @@ public class Dialog extends JDialog implements ActionListener
        _cancelButton = new JButton("Cancel");
        _cancelButton.addActionListener(this);
        _panel.add(_cancelButton);  
+       
+       _okButton.setPreferredSize(_cancelButton.getPreferredSize());
 
        getContentPane().setLayout(new BorderLayout());
 
