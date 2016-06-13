@@ -87,7 +87,7 @@ public class XDialogs implements ActionListener
 			// Handle "File Menu".
 			if (e.getActionCommand().equals("Say \"Hello\"")) {
 				System.out.println("User selected File Menu");
-				Dialog tDialog = new Dialog(frame);
+				DialogBoxGridBagLayout tDialog = new DialogBoxGridBagLayout(frame);
 				if (tDialog.pressedOk()){
 				   System.out.println("User pressed OK");
 				}

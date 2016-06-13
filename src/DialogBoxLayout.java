@@ -21,7 +21,7 @@ import javax.swing.JTextField;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
-public class Dialog extends JDialog implements ActionListener
+public class DialogBoxLayout extends JDialog implements ActionListener
 {
     private JPanel _panel = null;
 
@@ -36,7 +36,7 @@ public class Dialog extends JDialog implements ActionListener
     private boolean _pressedOk = false;
     private String _fileDir = null;
 
-    public Dialog(JFrame aOwner)
+    public DialogBoxLayout(JFrame aOwner)
     {
        super(aOwner, true/*modal*/);
 
@@ -65,32 +65,44 @@ public class Dialog extends JDialog implements ActionListener
        _panel.add(_cancelButton);  
        
        _okButton.setPreferredSize(_cancelButton.getPreferredSize());
+       
+       JPanel tLeftPane = new JPanel();
+       tLeftPane.setLayout(new BoxLayout(tLeftPane, BoxLayout.PAGE_AXIS));
+       JLabel label1 = new JLabel("Name");
+       tLeftPane.add(label1);
+       tLeftPane.add(Box.createRigidArea(new Dimension(0,5)));
+       JLabel label2 = new JLabel("File");
+       tLeftPane.add(label2);
 
-       getContentPane().setLayout(new BorderLayout());
+       JPanel tFileGroupPane = new JPanel();
+       tFileGroupPane.setLayout(new BoxLayout(tFileGroupPane, BoxLayout.LINE_AXIS));
+       tFileGroupPane.add(_filenameField);
+       tFileGroupPane.add(Box.createRigidArea(new Dimension(5,0)));
+       tFileGroupPane.add(_chooseFileButton);
+       
+       JPanel tRightPane = new JPanel();
+       tRightPane.setLayout(new BoxLayout(tRightPane, BoxLayout.PAGE_AXIS));
+       tRightPane.add(_someComboBox);
+       tRightPane.add(Box.createRigidArea(new Dimension(0,5)));
+       tRightPane.add(tFileGroupPane);
+       
+       JPanel tTopPane = new JPanel();
+       tTopPane.setLayout(new BoxLayout(tTopPane, BoxLayout.LINE_AXIS));
+       tTopPane.add(tLeftPane);
+       tTopPane.add(Box.createRigidArea(new Dimension(5,0)));
+       tTopPane.add(tRightPane);
 
-       JPanel centerPnl = new JPanel();
-       centerPnl.setLayout(new BorderLayout());
-       JPanel gridLayoutPane = new JPanel(); 
-       GridLayout gridLayout = new GridLayout(2,3);
+       JPanel tButtonPane = new JPanel();
+       tButtonPane.setLayout(new BoxLayout(tButtonPane, BoxLayout.LINE_AXIS));
+       tButtonPane.add(_okButton);
+       tButtonPane.add(Box.createRigidArea(new Dimension(5,0)));
+       tButtonPane.add(_cancelButton);
 
-       gridLayoutPane.setLayout(gridLayout);
-       gridLayoutPane.add(new JLabel("Group:"));
-       gridLayoutPane.add(_someComboBox);
-       gridLayoutPane.add(new JLabel("Empty"));
-       gridLayoutPane.add(new JLabel("File:"));
-       gridLayoutPane.add(_filenameField);
-       gridLayoutPane.add(_chooseFileButton);
-
-       centerPnl.add(gridLayoutPane, BorderLayout.CENTER);
-       //      centerPnl.add(new JLabel("Long label should be going here"), BorderLayout.SOUTH);
-
-       add(centerPnl, BorderLayout.CENTER);
-
-       JPanel bottomPanel = new JPanel();
-       bottomPanel.add(_okButton);
-       bottomPanel.add(_cancelButton);
-
-       add(bottomPanel, BorderLayout.SOUTH);
+//       tFileGroupPane.add(listScroller);
+//       tFileGroupPane.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+       Container contentPane = getContentPane();
+       contentPane.add(tTopPane, BorderLayout.CENTER);
+       contentPane.add(tButtonPane, BorderLayout.PAGE_END);
 
        pack();
        setLocationRelativeTo(aOwner);
