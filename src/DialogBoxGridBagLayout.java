@@ -27,8 +27,12 @@ public class DialogBoxGridBagLayout extends JDialog implements ActionListener
    private JButton _cancelButton = null;
 
    // Row 1: label, combobox
-   private JLabel _nameLabel = null;
-   private JComboBox<String> _nameComboBox = null;
+   private JLabel _firstNameLabel = null;
+   private JComboBox<String> _firstNameComboBox = null;
+
+   // Row 2: label, combobox
+   private JLabel _lastNameLabel = null;
+   private JComboBox<String> _lastNameComboBox = null;
 
    // Row 2: label, file text and browse button
    private JLabel _fileLabel = null;
@@ -56,11 +60,14 @@ public class DialogBoxGridBagLayout extends JDialog implements ActionListener
       _panel = new JPanel();
       getContentPane().add(_panel);
 
-      // create _nameLabel and _nameComboBox
+      // create _firstNameLabel and _firstNameComboBox
       createComponentsRow1();
 
-      // create _fileLable, _fileTextField, _fileBrowseButton
+      // create _lastNameLabel and _lastNameComboBox
       createComponentsRow2();
+
+      // create _fileLable, _fileTextField, _fileBrowseButton
+      createComponentsRow3();
 
       // create the main pane for user inputs
       JPanel tGridPane = createGridPane();
@@ -75,7 +82,7 @@ public class DialogBoxGridBagLayout extends JDialog implements ActionListener
 
       pack();
       setLocationRelativeTo(aOwner);
-      setSize(400, 160);
+      setSize(400, 185);
       setVisible(true);
    }
 
@@ -97,64 +104,88 @@ public class DialogBoxGridBagLayout extends JDialog implements ActionListener
 
       _filePane = createFilePane();
 
-      // buffer on top of first row
-      int tTopEdgeSpace = 20;
-      // buffer at bottom top of last row
-      int tBottomEdgeSpace = 10;
-      // buffer at right edge of last column
-      int tRightEdgeSpace = 20;
-      // buffer at left edge of first column
-      int tLeftEdgeSpace = 10;
+      // extra space on top of first row
+      int tXTop = 15;
+      // extra space at bottom top of last row
+      int tXBottom = 5;
+      // extra space at right edge of last column
+      int tXRight = 15;
+      // extra space at left edge of first column
+      int tXLeft = 5;
 
-      // settings for name label
+      // settings for firstName label
       c.gridx = 0;
       c.gridy = 0;
-      c.insets = new Insets(tTopEdgeSpace, tLeftEdgeSpace, 5, 5);
-      tGridPane.add(_nameLabel, c);
+      c.insets = new Insets(5 + tXTop, 5+ tXLeft, 5, 5);
+      tGridPane.add(_firstNameLabel, c);
+
+      // settings for lastName label
+      c.gridx = 0;
+      c.gridy = 1;
+      c.insets = new Insets(5, 5+ tXLeft, 5, 5);
+      tGridPane.add(_lastNameLabel, c);
 
       // settings for file label
       c.gridx = 0;
-      c.gridy = 1;
-      c.insets = new Insets(5, tLeftEdgeSpace, tBottomEdgeSpace, 5);
+      c.gridy = 2;
+      c.insets = new Insets(5, 5+ tXLeft, 5+ tXBottom, 5);
       tGridPane.add(_fileLabel, c);
 
       // common settings for column w
       c.anchor = GridBagConstraints.LINE_START; // left align
 
-      // settings for name combobox
+      // settings for firstName combobox
       c.gridx = 1;
       c.gridy = 0;
       c.weightx = 0.25;
-      c.insets = new Insets(tTopEdgeSpace, 5, 5, tRightEdgeSpace);
-      tGridPane.add(_nameComboBox, c);
+      c.insets = new Insets(5+ tXTop, 5, 5, 5+ tXRight);
+      tGridPane.add(_firstNameComboBox, c);
+
+      // settings for lastName combobox
+      c.gridx = 1;
+      c.gridy = 1;
+      c.weightx = 0.25;
+      c.insets = new Insets(5, 5, 5, 5+ tXRight);
+      tGridPane.add(_lastNameComboBox, c);
 
       // settings for file area
       c.fill = GridBagConstraints.HORIZONTAL; // stretch to fill horizontal
 
       c.gridx = 1;
-      c.gridy = 1;
+      c.gridy = 2;
       c.weightx = 0.95;
-      c.insets = new Insets(5, 5, tBottomEdgeSpace, tRightEdgeSpace);
+      c.insets = new Insets(5, 5, 5+ tXBottom, 5+ tXRight);
       tGridPane.add(_filePane, c);
 
       return tGridPane;
    }
 
    /**
-    * Creates row1: Name: <name_combobox>
+    * Creates row1: Name: <firstName_combobox>
     */
    void createComponentsRow1()
    {
-      _nameLabel = new JLabel("Name:");
+      _firstNameLabel = new JLabel("First name:");
 
       String[] tSomeNames = { "John", "Mary", "Sylvester" };
-      _nameComboBox = new JComboBox<String>(tSomeNames);
+      _firstNameComboBox = new JComboBox<String>(tSomeNames);
+   }
+
+   /**
+    * Creates row2: Name: <lastName_combobox>
+    */
+   void createComponentsRow2()
+   {
+      _lastNameLabel = new JLabel("Last name:");
+
+      String[] tSomeNames = { "Smith", "Contrary", "Woo" };
+      _lastNameComboBox = new JComboBox<String>(tSomeNames);
    }
 
    /**
     * Creates row2: File: <text_box> <browse_button>
     */
-   void createComponentsRow2()
+   void createComponentsRow3()
    {
       _fileLabel = new JLabel("File:");
 
@@ -219,17 +250,22 @@ public class DialogBoxGridBagLayout extends JDialog implements ActionListener
        * https://docs.oracle.com/javase/tutorial/uiswing/layout/box.html
        */
       JPanel tButtonPane = new JPanel();
-      tButtonPane.add(Box.createHorizontalGlue());
       tButtonPane.setLayout(new BoxLayout(tButtonPane, BoxLayout.LINE_AXIS));
+      tButtonPane.add(Box.createHorizontalGlue());
       tButtonPane.add(_okButton);
       tButtonPane.add(Box.createRigidArea(new Dimension(25, 0)));
       tButtonPane.add(_cancelButton);
       tButtonPane.add(Box.createHorizontalGlue());
 
       /*
-       * To enlarge the button pane, add a rigid area.
+       * To enlarge the button pane height, add a rigid area with extra height
+       * but zero width.
+       * Note that we could have just modified the height of the rigid area
+       * between the ok and cancel buttons accordingly, instead of adding the
+       * zero width rigid area here.
        */
       Dimension tDim = _okButton.getPreferredSize();
+      tDim.width = 0;
       tDim.height += 20;
       tButtonPane.add(Box.createRigidArea(tDim));
       return tButtonPane;
@@ -283,7 +319,7 @@ public class DialogBoxGridBagLayout extends JDialog implements ActionListener
 
    public String getAccountName()
    {
-      return (String) _nameComboBox.getSelectedItem();
+      return (String) _firstNameComboBox.getSelectedItem();
    }
 
    public String getTradeFileName()
