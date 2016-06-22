@@ -32,6 +32,8 @@ public class XTableExample extends JFrame
         tSetters.add(new TestFontGetter1());
         tSetters.add(new TestColorGetter1());
         tSetters.add(new TestIntegerGetter1(4/*column*/));
+        tSetters.add(new TestRenderInfoGetter1(0,0));
+        tSetters.add(new TestRenderInfoGetter1(2,4));
 
         CustomTableCellRenderer r = new CustomTableCellRenderer(tSetters);
 
