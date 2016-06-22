@@ -47,15 +47,13 @@ public class CustomTableCellRenderer extends JLabel implements TableCellRenderer
 			Object value, boolean isSelected, boolean hasFocus, int row,
 			int column)
 	{
-	   setText(value.toString());
-	   
 	   Font tFont = null;
 	   Color tColor = null;
+	   String tText = null;
 
 	   for (AbstractTableCellValue tSetter: _fontSetters)
 	   {
 	      if (tSetter.getMyType() == Font.class)
-//	      if (tSetter instanceof AbstractTableCellValue)
 	      {
 	         Font tNewFont = (Font) tSetter.getValue(this, table, value, isSelected, hasFocus, row, column);
 	         if (tNewFont != null)
@@ -69,6 +67,14 @@ public class CustomTableCellRenderer extends JLabel implements TableCellRenderer
 	         if (tNewColor != null)
 	         {
 	            tColor = tNewColor;
+	         }
+	      }
+	      else if (tSetter.getMyType() == String.class)
+	      {
+	         String tNewString = (String) tSetter.getValue(this, table, value, isSelected, hasFocus, row, column);
+	         if (tNewString != null)
+	         {
+	            tText = tNewString;
 	         }
 	      }
 	   }
@@ -90,6 +96,16 @@ public class CustomTableCellRenderer extends JLabel implements TableCellRenderer
 	   {
 	      setBackground(null);
 	   }
+	   
+	   if (tText != null)
+	   {
+	      setText(tText);
+	   }
+	   else
+	   {
+	      setText(value.toString());
+	   }
+	   
 //	   setBackground(scheme.bg_Normal[i]);
 //	   setForeground(scheme.fg_Normal[i]);
 		return this;

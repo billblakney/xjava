@@ -12,14 +12,14 @@ public class XTableExample extends JFrame
     {
         //headers for the table
         String[] columns = new String[] {
-            "Id", "Name", "Hourly Rate", "Part Time"
+            "Id", "Name", "Hourly Rate", "Part Time", "Int"
         };
          
         //actual data for the table in a 2d array
         Object[][] data = new Object[][] {
-            {1, "John", 40.0, false },
-            {2, "Rambo", 70.0, false },
-            {3, "Zorro", 60.0, true },
+            {1, "John", 40.0, false, 1000000 },
+            {2, "Rambo", 70.0, false, 599000 },
+            {3, "Zorro", 60.0, true, 35 },
         };
  
         //create table with data
@@ -31,6 +31,7 @@ public class XTableExample extends JFrame
         tSetters.add(new TestFontGetter2());
         tSetters.add(new TestFontGetter1());
         tSetters.add(new TestColorGetter1());
+        tSetters.add(new TestIntegerGetter1(4/*column*/));
 
         CustomTableCellRenderer r = new CustomTableCellRenderer(tSetters);
 
