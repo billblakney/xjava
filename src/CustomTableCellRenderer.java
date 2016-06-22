@@ -7,18 +7,16 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
-//import javax.swing.table.TableRowSorter;
 
-public class CustomTableCellRenderer extends JLabel implements TableCellRenderer {
+public class CustomTableCellRenderer extends JLabel
+                                     implements TableCellRenderer {
 
-//	TableRowSorter<GainTableModel> sorter;
-	
-//	TableTwoColorScheme scheme;
-
-   Color _defaultForegroundColor = null;
-   Color _defaultBackgroundColor = null;
+//TODO these can be removed; they're here as a note, but may not be useful
+//   Color _defaultForegroundColor = null;
+//   Color _defaultBackgroundColor = null;
+//		_defaultBackgroundColor = UIManager.getColor ( "Panel.background" );
+//		_defaultForegroundColor = UIManager.getColor ( "Panel.foreground" );
    
-//   Color color = UIManager.getColor ( "Panel.background" );
    
    Vector<TableCellInfoGetter> _fontSetters = new Vector<TableCellInfoGetter>();
 	
@@ -38,11 +36,10 @@ public class CustomTableCellRenderer extends JLabel implements TableCellRenderer
 		setOpaque(true);
 		setFont(getFont().deriveFont(Font.PLAIN));
 		setHorizontalAlignment(SwingConstants.RIGHT);
-//		_defaultBackgroundColor = UIManager.getColor ( "Panel.background" );
-//		_defaultForegroundColor = UIManager.getColor ( "Panel.foreground" );
 	}
 
 	
+	@Override
 	public Component getTableCellRendererComponent(JTable table,
 			Object value, boolean isSelected, boolean hasFocus, int row,
 			int column)
@@ -111,9 +108,7 @@ public class CustomTableCellRenderer extends JLabel implements TableCellRenderer
 	   {
 	      setForeground(null);
 	   }
-	   
-//	   setBackground(scheme.bg_Normal[i]);
-//	   setForeground(scheme.fg_Normal[i]);
+
 		return this;
 	}
 }
