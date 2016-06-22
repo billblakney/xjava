@@ -15,18 +15,20 @@ public class CustomTableCellRenderer extends JLabel implements TableCellRenderer
 	
 //	TableTwoColorScheme scheme;
 
-   Font _defaultFont = null;
-
-   Vector<AbstractFontSetter> _fontSetters = new Vector<AbstractFontSetter>();
+   Color _defaultForegroundColor = null;
+   Color _defaultBackgroundColor = null;
+   
+//   Color color = UIManager.getColor ( "Panel.background" );
+   
+   Vector<AbstractTableCellValue> _fontSetters = new Vector<AbstractTableCellValue>();
 	
-	public CustomTableCellRenderer(AbstractFontSetter aFontSetter) {
+	public CustomTableCellRenderer(AbstractTableCellValue aFontSetter) {
 		super();
 		init();
-		_defaultFont = UIManager.getFont("Label.font");
 		_fontSetters.add(aFontSetter);
 	}
 	
-	public CustomTableCellRenderer(Vector<AbstractFontSetter> aFontSetters) {
+	public CustomTableCellRenderer(Vector<AbstractTableCellValue> aFontSetters) {
 		super();
 		init();
 		_fontSetters = aFontSetters;
@@ -36,6 +38,8 @@ public class CustomTableCellRenderer extends JLabel implements TableCellRenderer
 		setOpaque(true);
 		setFont(getFont().deriveFont(Font.PLAIN));
 		setHorizontalAlignment(SwingConstants.RIGHT);
+//		_defaultBackgroundColor = UIManager.getColor ( "Panel.background" );
+//		_defaultForegroundColor = UIManager.getColor ( "Panel.foreground" );
 	}
 
 	
@@ -45,20 +49,47 @@ public class CustomTableCellRenderer extends JLabel implements TableCellRenderer
 	{
 	   setText(value.toString());
 	   
-	   AbstractFontSetter._font = null;
-	   for (AbstractFontSetter tSetter: _fontSetters)
+	   Font tFont = null;
+	   Color tColor = null;
+
+	   for (AbstractTableCellValue tSetter: _fontSetters)
 	   {
-	      tSetter.setFont(this, table, value, isSelected, hasFocus, row, column);
+	      if (tSetter.getMyType() == Font.class)
+//	      if (tSetter instanceof AbstractTableCellValue)
+	      {
+	         Font tNewFont = (Font) tSetter.getValue(this, table, value, isSelected, hasFocus, row, column);
+	         if (tNewFont != null)
+	         {
+	            tFont = tNewFont;
+	         }
+	      }
+	      else if (tSetter.getMyType() == Color.class)
+	      {
+	         Color tNewColor = (Color) tSetter.getValue(this, table, value, isSelected, hasFocus, row, column);
+	         if (tNewColor != null)
+	         {
+	            tColor = tNewColor;
+	         }
+	      }
 	   }
-	   if (AbstractFontSetter._font != null)
+
+	   if (tFont != null)
 	   {
-	      setFont(AbstractFontSetter._font);
+	      setFont(tFont);
 	   }
 	   else
 	   {
-	      setFont(_defaultFont);
+	      setFont(null);
 	   }
-	   AbstractFontSetter._font = null;
+	   
+	   if (tColor != null)
+	   {
+	      setBackground(tColor);
+	   }
+	   else
+	   {
+	      setBackground(null);
+	   }
 //	   setBackground(scheme.bg_Normal[i]);
 //	   setForeground(scheme.fg_Normal[i]);
 		return this;

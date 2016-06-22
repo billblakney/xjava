@@ -27,9 +27,10 @@ public class XTableExample extends JFrame
         
         Font labelFont = UIManager.getFont("Label.font");
 
-        Vector<AbstractFontSetter> tSetters = new Vector<AbstractFontSetter>();
-        tSetters.add(new TestFontsetter2());
-        tSetters.add(new TestFontsetter1());
+        Vector<AbstractTableCellValue> tSetters = new Vector<AbstractTableCellValue>();
+        tSetters.add(new TestFontGetter2());
+        tSetters.add(new TestFontGetter1());
+        tSetters.add(new TestColorGetter1());
 
         CustomTableCellRenderer r = new CustomTableCellRenderer(tSetters);
 
