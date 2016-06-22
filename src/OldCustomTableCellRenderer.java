@@ -9,7 +9,7 @@ import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
 //import javax.swing.table.TableRowSorter;
 
-public class CustomTableCellRenderer extends JLabel implements TableCellRenderer {
+public class OldCustomTableCellRenderer extends JLabel implements TableCellRenderer {
 
 //	TableRowSorter<GainTableModel> sorter;
 	
@@ -20,18 +20,18 @@ public class CustomTableCellRenderer extends JLabel implements TableCellRenderer
    
 //   Color color = UIManager.getColor ( "Panel.background" );
    
-   Vector<TableCellInfoGetter> _fontSetters = new Vector<TableCellInfoGetter>();
+   Vector<AbstractTableCellValue> _fontSetters = new Vector<AbstractTableCellValue>();
 	
-	public CustomTableCellRenderer(TableCellInfoGetter aCellInfoGetter) {
+	public OldCustomTableCellRenderer(AbstractTableCellValue aFontSetter) {
 		super();
 		init();
-		_fontSetters.add(aCellInfoGetter);
+		_fontSetters.add(aFontSetter);
 	}
 	
-	public CustomTableCellRenderer(Vector<TableCellInfoGetter> aCellInfoGetters) {
+	public OldCustomTableCellRenderer(Vector<AbstractTableCellValue> aFontSetters) {
 		super();
 		init();
-		_fontSetters = aCellInfoGetters;
+		_fontSetters = aFontSetters;
 	}
 
 	private void init(){
@@ -52,26 +52,53 @@ public class CustomTableCellRenderer extends JLabel implements TableCellRenderer
 	   Color tBackground = null;
 	   Color tForeground = null;
 
-	   for (TableCellInfoGetter tSetter: _fontSetters)
+	   for (AbstractTableCellValue tSetter: _fontSetters)
 	   {
-	      TableCellInfo tInfo = (TableCellInfo)tSetter.getInfo(this, table, value, isSelected, hasFocus, row, column);
-	      if (tInfo != null)
+	      if (tSetter.getMyType() == TableCellInfo.class)
 	      {
-	         if (tInfo._text != null)
+	         TableCellInfo tInfo = (TableCellInfo)tSetter.getValue(this, table, value, isSelected, hasFocus, row, column);
+	         if (tInfo != null)
 	         {
-	            tText = tInfo._text;
+	            if (tInfo._text != null)
+	            {
+	               tText = tInfo._text;
+	            }
+	            if (tInfo._font != null)
+	            {
+	               tFont = tInfo._font;
+	            }
+	            if (tInfo._bgColor != null)
+	            {
+	               tBackground = tInfo._bgColor;
+	            }
+	            if (tInfo._fgColor != null)
+	            {
+	               tForeground = tInfo._fgColor;
+	            }
 	         }
-	         if (tInfo._font != null)
+	      }
+	      else if (tSetter.getMyType() == Font.class)
+	      {
+	         Font tNewFont = (Font) tSetter.getValue(this, table, value, isSelected, hasFocus, row, column);
+	         if (tNewFont != null)
 	         {
-	            tFont = tInfo._font;
+	            tFont = tNewFont;
 	         }
-	         if (tInfo._bgColor != null)
+	      }
+	      else if (tSetter.getMyType() == Color.class)
+	      {
+	         Color tNewColor = (Color) tSetter.getValue(this, table, value, isSelected, hasFocus, row, column);
+	         if (tNewColor != null)
 	         {
-	            tBackground = tInfo._bgColor;
+	            tBackground = tNewColor;
 	         }
-	         if (tInfo._fgColor != null)
+	      }
+	      else if (tSetter.getMyType() == String.class)
+	      {
+	         String tNewString = (String) tSetter.getValue(this, table, value, isSelected, hasFocus, row, column);
+	         if (tNewString != null)
 	         {
-	            tForeground = tInfo._fgColor;
+	            tText = tNewString;
 	         }
 	      }
 	   }

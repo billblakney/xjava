@@ -6,9 +6,9 @@ import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
  
-public class XTableExample extends JFrame
+public class XTableExample2 extends JFrame
 {
-    public XTableExample()
+    public XTableExample2()
     {
         //headers for the table
         String[] columns = new String[] {
@@ -27,17 +27,12 @@ public class XTableExample extends JFrame
         
         Font labelFont = UIManager.getFont("Label.font");
 
-        Vector<AbstractTableCellValue> tSetters = new Vector<AbstractTableCellValue>();
-        tSetters.add(new TestFontGetter2());
-        tSetters.add(new TestFontGetter1());
-        tSetters.add(new TestColorGetter1());
-        tSetters.add(new TestIntegerGetter1(4/*column*/));
-        tSetters.add(new TestRenderInfoGetter1(0,0));
-        tSetters.add(new TestRenderInfoGetter1(2,4));
+        Vector<TableCellInfoGetter> tGetters = new Vector<TableCellInfoGetter>();
+        tGetters.add(new IntWithCommaGetter(4));
 
-        OldCustomTableCellRenderer r = new OldCustomTableCellRenderer(tSetters);
+        CustomTableCellRenderer r = new CustomTableCellRenderer(tGetters);
 
-        table.setDefaultRenderer(Object.class, r);
+        table.setDefaultRenderer(Object.class,r);
          
         //add the table to the frame
         this.add(new JScrollPane(table));
@@ -53,7 +48,7 @@ public class XTableExample extends JFrame
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new XTableExample();
+                new XTableExample2();
             }
         });
     }   
