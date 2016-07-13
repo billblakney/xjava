@@ -1,3 +1,4 @@
+package factorial;
 import java.util.Scanner;
 
 public class Factorial

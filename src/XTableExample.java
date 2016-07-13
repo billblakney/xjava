@@ -25,20 +25,6 @@ public class XTableExample extends JFrame
         //create table with data
         JTable table = new JTable(data, columns);
         
-        Font labelFont = UIManager.getFont("Label.font");
-
-        Vector<AbstractTableCellValue> tSetters = new Vector<AbstractTableCellValue>();
-        tSetters.add(new TestFontGetter2());
-        tSetters.add(new TestFontGetter1());
-        tSetters.add(new TestColorGetter1());
-        tSetters.add(new TestIntegerGetter1(4/*column*/));
-        tSetters.add(new TestRenderInfoGetter1(0,0));
-        tSetters.add(new TestRenderInfoGetter1(2,4));
-
-        OldCustomTableCellRenderer r = new OldCustomTableCellRenderer(tSetters);
-
-        table.setDefaultRenderer(Object.class, r);
-         
         //add the table to the frame
         this.add(new JScrollPane(table));
          
