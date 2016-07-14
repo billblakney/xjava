@@ -36,6 +36,11 @@ public class XTreeTableView2 extends Application {
     TreeItem<TableEntry> root = new TreeItem<>(new TableEntry());
     root.setExpanded(true);
     
+    TreeItem<TableEntry> groupA = new TreeItem<>(
+          new TableEntry(0,"Group A",10.0,new BigDecimal("9.99")));
+    
+    TreeItem<TableEntry> groupB = new TreeItem<>(
+          new TableEntry(0,"Group B",99.0,new BigDecimal("0.00")));
     /*
      * Create the child items, and add them to root.
      */
@@ -45,8 +50,14 @@ public class XTreeTableView2 extends Application {
           new TableEntry(2,"Mary",99.0,new BigDecimal("7.99")));
     TreeItem<TableEntry> tChild3 = new TreeItem<>(
           new TableEntry(3,"Harris",45.3,new BigDecimal("11.99")));
+    TreeItem<TableEntry> tChild4 = new TreeItem<>(
+          new TableEntry(3,"Tanya",33.3,new BigDecimal("33.99")));
 
-    root.getChildren().setAll(tChild1, tChild2, tChild3);
+    groupA.getChildren().setAll(tChild1, tChild2, tChild3);
+
+    groupB.getChildren().setAll(tChild4);
+    
+    root.getChildren().setAll(groupA,groupB);
 
     /*
      * Create the id column.
@@ -150,6 +161,7 @@ public class XTreeTableView2 extends Application {
      * Create the tree table view.
      */
     TreeTableView<TableEntry> treeTableView = new TreeTableView<>(root);
+    treeTableView.setShowRoot(false);
     treeTableView.setEditable(true);
     nameColumn.setEditable(true);
     valueColumn.setEditable(true);
