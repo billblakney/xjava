@@ -1,3 +1,4 @@
+package treetable;
 
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -31,19 +32,23 @@ public class XTreeTableView1 extends Application {
 
     TreeTableColumn<String, String> column = new TreeTableColumn<>("Column");
     column.setPrefWidth(150);
+    
+    column.setCellValueFactory(
+       new Callback<CellDataFeatures<String,String>, ObservableValue<String>>()
+       {
+          @Override public ObservableValue<String>
+          call(CellDataFeatures<String, String> p)
+          {
+             return new ReadOnlyStringWrapper(p.getValue().getValue());
+          }
+       });
 
-//    column.setCellValueFactory((CellDataFeatures<String, String> p) -> new ReadOnlyStringWrapper(
-//            p.getValue().getValue()));
-    
-    //first getValue() Returns the value passed in to the constructor
-    //getValue() Returns the data represented by this TreeItem
-//    column.setCellValueFactory((CellDataFeatures p) -> new ReadOnlyStringWrapper(p.getValue().getValue())); 
-    
-    column.setCellValueFactory(new Callback<CellDataFeatures<String, String>, ObservableValue<String>>() {
-       @Override public ObservableValue<String> call(CellDataFeatures<String, String> p) {
-           return new ReadOnlyStringWrapper(p.getValue().getValue());
-       }
-   });
+// This works, too. I think this just using a lambda for the Callback call
+// interface method.
+//    column.setCellValueFactory(
+//          (CellDataFeatures<String, String> p) ->
+//             new ReadOnlyStringWrapper(p.getValue().getValue())
+//          );
 
     TreeTableView<String> treeTableView = new TreeTableView<>(root);
     treeTableView.getColumns().add(column);
