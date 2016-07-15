@@ -62,7 +62,7 @@ public class TableEntry
 
    public SimpleDoubleProperty ratingProperty() {
      if (rating == null) {
-       rating = new SimpleDoubleProperty(this, "value");
+       rating = new SimpleDoubleProperty(this, "rating");
      }
      return rating;
    }
