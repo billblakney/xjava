@@ -15,6 +15,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.converter.BigDecimalStringConverter;
@@ -99,28 +100,29 @@ public class XTreeTableView2 extends Application {
     /*
      * Create the value column. Set it up to support editing.
      */
-    // short way
-//    TreeTableColumn<TableEntry,Double> valueColumn = new TreeTableColumn<>("Value");
-//    valueColumn.setPrefWidth(100);
-//    valueColumn.setCellValueFactory((p)-> 
-//          p.getValue().getValue().valueProperty().asObject()
-//       );
-
-    // long way
     TreeTableColumn<TableEntry,Double> valueColumn = new TreeTableColumn<>("Value");
     valueColumn.setPrefWidth(100);
-    valueColumn.setCellValueFactory(
-       new Callback<CellDataFeatures<TableEntry,Double>,ObservableValue<Double>>()
-       {
-          @Override public ObservableValue<Double>
-          call(CellDataFeatures<TableEntry,Double> p)
-          {
-             // ?Note: SimpleDoubleProperty implements ObservableValue<Number>,
-             // so must use this workaround.
-             return p.getValue().getValue().valueProperty().asObject();
-          }
-       }
-     );
+
+    boolean useShortWay = false;
+    if (useShortWay == true)
+    {
+       valueColumn.setCellValueFactory((p)-> 
+       p.getValue().getValue().valueProperty().asObject()
+             );
+    }
+    else
+    {
+       valueColumn.setCellValueFactory(
+             new Callback<CellDataFeatures<TableEntry,Double>,ObservableValue<Double>>() {
+                @Override public ObservableValue<Double>
+                call(CellDataFeatures<TableEntry,Double> p)
+                {
+                   // ?Note: SimpleDoubleProperty implements ObservableValue<Number>,
+                   // so must use this workaround.
+                   return p.getValue().getValue().valueProperty().asObject();
+                }
+             });
+    }
     
     // Add this to support editing. Otherwise, not needed.
     valueColumn.setCellFactory(
@@ -137,25 +139,33 @@ public class XTreeTableView2 extends Application {
           return p.getValue().getValue().amountProperty(); });
     
     // Add this to support editing. Otherwise, not needed.
-    amountColumn.setCellFactory(
+    boolean useUpdateItem = true;
+    if (!useUpdateItem)
+    {
+       amountColumn.setCellFactory(
           TextFieldTreeTableCell.<TableEntry,BigDecimal>forTreeTableColumn(
-                new BigDecimalStringConverter()));
-
-//TODO rm if not useful
-//    amountColumn.setCellFactory(p-> {
-//       return new TreeTableCell<TableEntry,BigDecimal>(){
-//          @Override
-//          protected void updateItem(BigDecimal item, boolean empty) {
-//             super.updateItem(item, empty);
-//             DecimalFormat df = new DecimalFormat("#,###.00");
-//             if(empty || item == null){
-//                setText("");
-//             } else {
-//                setText(df.format(item));
-//             }
-//          }
-//       };
-//    });
+             new BigDecimalStringConverter()));
+    }
+    else
+    {
+       amountColumn.setCellFactory((p)-> {
+          return new TreeTableCell<TableEntry,BigDecimal>()
+          {
+             @Override
+             protected void updateItem(BigDecimal item, boolean empty) {
+                super.updateItem(item, empty);
+                DecimalFormat df = new DecimalFormat("#,###.0000");
+                if(empty || item == null){
+                   setText("");
+                } else {
+                   setText(df.format(item));
+                   this.setTextFill(Color.WHITE);
+                   setStyle("-fx-background-color: blue");
+                }
+             }
+          };}
+       );
+    }
     
     /*
      * Create the tree table view.
