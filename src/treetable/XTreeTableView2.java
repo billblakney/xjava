@@ -13,6 +13,7 @@ import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableView;
+import javafx.scene.control.cell.CheckBoxTreeTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.scene.paint.Color;
@@ -184,6 +185,14 @@ public class XTreeTableView2 extends Application {
     }
     
     /*
+     * Create the boolean column.
+     */
+    TreeTableColumn<TableEntry,Boolean> awardColumn =
+          new TreeTableColumn<>( "Award" );
+    awardColumn.setCellValueFactory((p)-> p.getValue().getValue().awardProperty());
+    awardColumn.setCellFactory(CheckBoxTreeTableCell.forTreeTableColumn(awardColumn));
+    
+    /*
      * Create the tree table view.
      */
     TreeTableView<TableEntry> treeTableView = new TreeTableView<>(root);
@@ -196,6 +205,7 @@ public class XTreeTableView2 extends Application {
     treeTableView.getColumns().add(nameColumn);
     treeTableView.getColumns().add(valueColumn);
     treeTableView.getColumns().add(bonusColumn);
+    treeTableView.getColumns().add(awardColumn);
     sceneRoot.getChildren().add(treeTableView);
     stage.setScene(scene);
     stage.show();
