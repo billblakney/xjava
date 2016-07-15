@@ -3,8 +3,13 @@ package treetable;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Vector;
+import org.fxmisc.easybind.EasyBind;
 import javafx.application.Application;
+import javafx.beans.binding.Binding;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -26,7 +31,7 @@ import javafx.util.converter.DoubleStringConverter;
  * Mainly demonstrates creating different types of columns of a treetable,
  * including making the columns editable.
  */
-public class XTreeTableView2 extends Application implements EventHandler<ActionEvent>
+public class XTreeTableView3 extends Application implements EventHandler<ActionEvent>
 {
   Vector<TreeItem<TableEntry>> group1 = new Vector<TreeItem<TableEntry>>();
   Vector<TreeItem<TableEntry>> group2 = new Vector<TreeItem<TableEntry>>();
@@ -43,20 +48,8 @@ public class XTreeTableView2 extends Application implements EventHandler<ActionE
   {
     final Scene scene = new Scene(new Group(), 400, 300);
     Group sceneRoot = (Group) scene.getRoot();
-    
     /*
-     * Create the root item.
-     */
-    TreeItem<TableEntry> root = new TreeItem<>(new TableEntry());
-    root.setExpanded(true);
-    
-    TreeItem<TableEntry> groupA = new TreeItem<>(
-          new TableEntry(0,"Group A",10.0,new BigDecimal("9.99"),true));
-    
-    TreeItem<TableEntry> groupB = new TreeItem<>(
-          new TableEntry(0,"Group B",99.0,new BigDecimal("0.00"),true));
-    /*
-     * Create the child items, and add them to root.
+     * Create the child items, and add them to their respective summary nodes.
      */
     TreeItem<TableEntry> tItem;
     int i = 1;
@@ -81,9 +74,50 @@ public class XTreeTableView2 extends Application implements EventHandler<ActionE
           new TableEntry(i++,"Nancy",0.2,new BigDecimal("1.09"),true));
     group2.add(tItem);
 
+    /*
+     * Create the summary nodes.
+     */
+    TreeItem<TableEntry> groupA = new TreeItem<>(
+          new TableEntry(0,"Group A",10.0,new BigDecimal("9.99"),true));
+
+//---------------------------------      
+    ObservableList<TreeItem<TableEntry>> observableItems =
+          FXCollections.observableList(group1);
+
+    ObservableList<SimpleDoubleProperty> ratings;
+
+    ratings = EasyBind.map(observableItems, (treeitem) -> {
+       return treeitem.getValue().ratingProperty();
+    });
+
+    for (SimpleDoubleProperty tInt: ratings)
+    {
+       System.out.println("score=" + tInt.intValue());
+    }
+
+    Binding<Double> ratingsTotal = EasyBind.combine(
+          ratings,
+          stream -> stream.mapToDouble(Number::doubleValue).sum());
+    
+//TODO IP
+//    ratingsTotal.addListener(arg0);
+
+    System.out.println("SUM=" + ratingsTotal.getValue().toString());
+//---------------------------------      
+
     groupA.getChildren().setAll(group1);
 
+    TreeItem<TableEntry> groupB = new TreeItem<>(
+//          new TableEntry(0,"Group B",new SimpleDoubleProperty(sum),new BigDecimal("0.00"),true));
+          new TableEntry(0,"Group B",99.0,new BigDecimal("0.00"),true));
+
     groupB.getChildren().setAll(group2);
+    
+    /*
+     * Create the root item.
+     */
+    TreeItem<TableEntry> root = new TreeItem<>(new TableEntry());
+    root.setExpanded(true);
     
     root.getChildren().setAll(groupA,groupB);
 

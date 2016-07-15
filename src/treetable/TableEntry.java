@@ -24,12 +24,23 @@ public class TableEntry
    {
    }
 
-   public TableEntry(Integer id, String name, double value, BigDecimal bonus,
+//TODO IP
+//   public TableEntry(Integer id, String name, Binding<Double> rating, BigDecimal bonus,
+//         boolean award)
+//   {
+//     this.id = new SimpleIntegerProperty(id);
+//     this.name = new SimpleStringProperty(name);
+//     this.rating = new SimpleDoubleProperty(rating;
+//     this.bonus = new SimpleObjectProperty(bonus);
+//     this.award = new SimpleBooleanProperty(award);
+//   }
+
+   public TableEntry(Integer id, String name, double rating, BigDecimal bonus,
          boolean award)
    {
      this.id = new SimpleIntegerProperty(id);
      this.name = new SimpleStringProperty(name);
-     this.rating = new SimpleDoubleProperty(value);
+     this.rating = new SimpleDoubleProperty(rating);
      this.bonus = new SimpleObjectProperty(bonus);
      this.award = new SimpleBooleanProperty(award);
    }
