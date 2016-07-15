@@ -1,15 +1,12 @@
 package easybind;
 
 import javafx.beans.binding.Binding;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.Vector;
-import java.util.stream.Stream;
-import org.fxmisc.easybind.*;
+import org.fxmisc.easybind.EasyBind;
 
 public class XEasyBind
 {
@@ -70,7 +67,7 @@ public class XEasyBind
       
       for (SimpleIntegerProperty tInt: xscores)
       {
-         System.out.println("score=" + tInt);
+         System.out.println("score=" + tInt.intValue());
       }
 
       
