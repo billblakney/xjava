@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.util.Vector;
 import org.fxmisc.easybind.EasyBind;
+import org.fxmisc.easybind.monadic.MonadicBinding;
 
 public class XEasyBind
 {
@@ -74,13 +75,16 @@ public class XEasyBind
       //works
       Binding<Integer> sum = EasyBind.combine(
             xscores,
-            stream -> stream.mapToInt(Number::intValue).sum());
+            stream -> stream.mapToInt(Number::intValue).sum()); //mypreferred
 //            stream -> stream.mapToInt(i -> i.intValue()).sum()); //equiv
       
+//This modification works, though.
+//      MonadicBinding<Object> sum = EasyBind.combine(
+//            xscores,
+//            stream -> stream.reduce((a, b) -> a.intValue() + b.intValue()).orElse(0));
 //original from https://github.com/TomasMikula/EasyBind, but doesn't compile
 //      Binding<Integer> sum = EasyBind.combine(
 //            xscores,
-//            stream -> stream.reduce((a, b) -> a + b).orElse(0));
 
       System.out.println("SUM=" + sum.getValue().toString());
 
