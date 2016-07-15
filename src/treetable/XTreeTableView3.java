@@ -7,6 +7,7 @@ import org.fxmisc.easybind.EasyBind;
 import javafx.application.Application;
 import javafx.beans.binding.Binding;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,10 +32,14 @@ import javafx.util.converter.DoubleStringConverter;
  * Mainly demonstrates creating different types of columns of a treetable,
  * including making the columns editable.
  */
-public class XTreeTableView3 extends Application implements EventHandler<ActionEvent>
+public class XTreeTableView3 extends Application implements
+      EventHandler<ActionEvent>, // for button press
+      ChangeListener<Object> // for now to watch ratingsTotal
 {
   Vector<TreeItem<TableEntry>> group1 = new Vector<TreeItem<TableEntry>>();
   Vector<TreeItem<TableEntry>> group2 = new Vector<TreeItem<TableEntry>>();
+
+  Binding<Double> ratingsTotal;
 
   TreeItem<TableEntry> tChild4;
 
@@ -80,9 +85,11 @@ public class XTreeTableView3 extends Application implements EventHandler<ActionE
     TreeItem<TableEntry> groupA = new TreeItem<>(
           new TableEntry(0,"Group A",10.0,new BigDecimal("9.99"),true));
 
+    groupA.getChildren().setAll(group1);
+
 //---------------------------------      
     ObservableList<TreeItem<TableEntry>> observableItems =
-          FXCollections.observableList(group1);
+          FXCollections.observableList(group2);
 
     ObservableList<SimpleDoubleProperty> ratings;
 
@@ -95,21 +102,19 @@ public class XTreeTableView3 extends Application implements EventHandler<ActionE
        System.out.println("score=" + tInt.intValue());
     }
 
-    Binding<Double> ratingsTotal = EasyBind.combine(
+    ratingsTotal = EasyBind.combine(
           ratings,
           stream -> stream.mapToDouble(Number::doubleValue).sum());
     
 //TODO IP
-//    ratingsTotal.addListener(arg0);
+    ratingsTotal.addListener(this);
 
     System.out.println("SUM=" + ratingsTotal.getValue().toString());
 //---------------------------------      
 
-    groupA.getChildren().setAll(group1);
-
     TreeItem<TableEntry> groupB = new TreeItem<>(
-//          new TableEntry(0,"Group B",new SimpleDoubleProperty(sum),new BigDecimal("0.00"),true));
-          new TableEntry(0,"Group B",99.0,new BigDecimal("0.00"),true));
+          new TableEntry(0,"Group B",ratingsTotal.getValue(),new BigDecimal("0.00"),true,1));
+    //TODO fix ctor workaround
 
     groupB.getChildren().setAll(group2);
     
@@ -272,6 +277,12 @@ public class XTreeTableView3 extends Application implements EventHandler<ActionE
     sceneRoot.getChildren().add(dataButton);
     stage.setScene(scene);
     stage.show();
+  }
+  
+  @Override
+  public void changed(ObservableValue o,Object oldVal, Object newVal)
+  {
+     System.out.println("new ratingsTotal value: " + ratingsTotal.getValue());
   }
 
   @Override

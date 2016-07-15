@@ -25,15 +25,16 @@ public class TableEntry
    }
 
 //TODO IP
-//   public TableEntry(Integer id, String name, Binding<Double> rating, BigDecimal bonus,
-//         boolean award)
-//   {
-//     this.id = new SimpleIntegerProperty(id);
-//     this.name = new SimpleStringProperty(name);
-//     this.rating = new SimpleDoubleProperty(rating;
-//     this.bonus = new SimpleObjectProperty(bonus);
-//     this.award = new SimpleBooleanProperty(award);
-//   }
+   public TableEntry(Integer id, String name, Double rating, BigDecimal bonus,
+         boolean award,int x)
+   {
+System.out.println("XXXXXXXXXXXXXXXXX");
+     this.id = new SimpleIntegerProperty(id);
+     this.name = new SimpleStringProperty(name);
+     this.rating = new SimpleDoubleProperty(rating);
+     this.bonus = new SimpleObjectProperty(bonus);
+     this.award = new SimpleBooleanProperty(award);
+   }
 
    public TableEntry(Integer id, String name, double rating, BigDecimal bonus,
          boolean award)
