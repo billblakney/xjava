@@ -149,10 +149,11 @@ public class XTreeTableView2 extends Application {
     else
     {
        amountColumn.setCellFactory((p)-> {
-          return new TreeTableCell<TableEntry,BigDecimal>()
+          return new TextFieldTreeTableCell<TableEntry,BigDecimal>(
+                new BigDecimalStringConverter()) // need the converter to edit
           {
              @Override
-             protected void updateItem(BigDecimal item, boolean empty) {
+             public void updateItem(BigDecimal item, boolean empty) {
                 super.updateItem(item, empty);
                 DecimalFormat df = new DecimalFormat("#,###.0000");
                 if(empty || item == null){
@@ -162,6 +163,18 @@ public class XTreeTableView2 extends Application {
                    this.setTextFill(Color.WHITE);
                    setStyle("-fx-background-color: blue");
                 }
+             }
+             @Override public void startEdit() {
+
+                super.startEdit();
+// could this block be useful? how?
+//                if (isEditing()) {
+//                   textField.textProperty().addListener(rtf);
+//                   if(getItem()!=null)
+//                    textField.setText(getItem().toString());
+//                      setGraphic(textField);
+//                      textField.selectAll();
+//                }
              }
           };}
        );
