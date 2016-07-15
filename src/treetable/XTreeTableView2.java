@@ -6,8 +6,12 @@ import javafx.application.Application;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TreeTableCell;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableColumn.CellDataFeatures;
@@ -23,15 +27,18 @@ import javafx.util.converter.BigDecimalStringConverter;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.NumberStringConverter;
 
-public class XTreeTableView2 extends Application {
-  public static void main(String[] args) {
+public class XTreeTableView2 extends Application implements EventHandler<ActionEvent>
+{
+  TreeItem<TableEntry> tChild4;
+
+  public static void main(String[] args)
+  {
     Application.launch(args);
   }
-  /* (non-Javadoc)
- * @see javafx.application.Application#start(javafx.stage.Stage)
- */
-@Override
-  public void start(Stage stage) {
+
+  @Override
+  public void start(Stage stage)
+  {
     final Scene scene = new Scene(new Group(), 400, 300);
     Group sceneRoot = (Group) scene.getRoot();
     
@@ -55,7 +62,8 @@ public class XTreeTableView2 extends Application {
           new TableEntry(2,"Mary",99.0,new BigDecimal("7.99"),true));
     TreeItem<TableEntry> tChild3 = new TreeItem<>(
           new TableEntry(3,"Harris",45.3,new BigDecimal("11.99"),true));
-    TreeItem<TableEntry> tChild4 = new TreeItem<>(
+//    TreeItem<TableEntry> tChild4 = new TreeItem<>(
+    tChild4 = new TreeItem<>(
           new TableEntry(3,"Tanya",33.3,new BigDecimal("33.99"),true));
 
     groupA.getChildren().setAll(tChild1, tChild2, tChild3);
@@ -201,13 +209,26 @@ public class XTreeTableView2 extends Application {
     nameColumn.setEditable(true);
     valueColumn.setEditable(true);
     bonusColumn.setEditable(true);
+    awardColumn.setEditable(true);
     treeTableView.getColumns().add(idColumn);
     treeTableView.getColumns().add(nameColumn);
     treeTableView.getColumns().add(valueColumn);
     treeTableView.getColumns().add(bonusColumn);
     treeTableView.getColumns().add(awardColumn);
+    
+    Button dataButton = new Button("Data");
+    dataButton.setOnAction(this);   
+
     sceneRoot.getChildren().add(treeTableView);
+    sceneRoot.getChildren().add(dataButton);
     stage.setScene(scene);
     stage.show();
+  }
+
+  @Override
+  public void handle(ActionEvent e)
+  {
+     System.out.println("HELLO");
+     System.out.println(tChild4.toString());
   }
 }

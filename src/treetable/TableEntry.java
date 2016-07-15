@@ -33,6 +33,18 @@ public class TableEntry
      this.bonus = new SimpleObjectProperty(bonus);
      this.award = new SimpleBooleanProperty(award);
    }
+   
+   @Override
+   public String toString()
+   {
+      StringBuilder tBuilder = new StringBuilder();
+      tBuilder.append("id=" + getId() + ",");
+      tBuilder.append("name=" + getName() + ",");
+      tBuilder.append("rating=" + getRating() + ",");
+      tBuilder.append("bonus=" + getBonus() + ",");
+      tBuilder.append("award=" + getAward());
+      return tBuilder.toString();
+   }
 
    public SimpleIntegerProperty idProperty() {
      if (id == null) {
@@ -85,7 +97,7 @@ public class TableEntry
      name.set(fName);
    }
 
-   public double getValue() {
+   public double getRating() {
      return rating.get();
    }
 
