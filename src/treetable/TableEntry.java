@@ -2,6 +2,7 @@ package treetable;
 
 import java.math.BigDecimal;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -13,20 +14,24 @@ public class TableEntry
 
    private SimpleStringProperty name;
 
-   private SimpleDoubleProperty value;
+   private SimpleDoubleProperty rating;
 
-   private SimpleObjectProperty<BigDecimal> amount;
+   private SimpleObjectProperty<BigDecimal> bonus;
+   
+   private SimpleBooleanProperty award;
 
    public TableEntry()
    {
    }
 
-   public TableEntry(Integer id, String name, double value, BigDecimal amount)
+   public TableEntry(Integer id, String name, double value, BigDecimal bonus,
+         boolean award)
    {
      this.id = new SimpleIntegerProperty(id);
      this.name = new SimpleStringProperty(name);
-     this.value = new SimpleDoubleProperty(value);
-     this.amount = new SimpleObjectProperty(amount);
+     this.rating = new SimpleDoubleProperty(value);
+     this.bonus = new SimpleObjectProperty(bonus);
+     this.award = new SimpleBooleanProperty(award);
    }
 
    public SimpleIntegerProperty idProperty() {
@@ -43,18 +48,25 @@ public class TableEntry
      return name;
    }
 
-   public SimpleDoubleProperty valueProperty() {
-     if (value == null) {
-       value = new SimpleDoubleProperty(this, "value");
+   public SimpleDoubleProperty ratingProperty() {
+     if (rating == null) {
+       rating = new SimpleDoubleProperty(this, "value");
      }
-     return value;
+     return rating;
    }
 
-   public SimpleObjectProperty<BigDecimal> amountProperty() {
-     if (amount == null) {
-       amount = new SimpleObjectProperty<BigDecimal>(this, "0.0");
+   public SimpleObjectProperty<BigDecimal> bonusProperty() {
+     if (bonus == null) {
+       bonus = new SimpleObjectProperty<BigDecimal>(this, "0.0");
      }
-     return amount;
+     return bonus;
+   }
+
+   public SimpleBooleanProperty awardProperty() {
+     if (award == null) {
+       award = new SimpleBooleanProperty(this, "award");
+     }
+     return award;
    }
 
    public Integer getId() {
@@ -74,18 +86,26 @@ public class TableEntry
    }
 
    public double getValue() {
-     return value.get();
+     return rating.get();
    }
 
    public void setValue(double fName) {
-     value.set(fName);
+     rating.set(fName);
    }
 
-   public BigDecimal getAmount() {
-     return amount.getValue();
+   public BigDecimal getBonus() {
+     return bonus.getValue();
    }
 
-   public void setAmount(BigDecimal fName) {
-     amount.set(fName);
+   public void setBonus(BigDecimal fName) {
+     bonus.set(fName);
+   }
+
+   public Boolean getAward() {
+     return award.getValue();
+   }
+
+   public void setAward(Boolean fName) {
+     award.set(fName);
    }
 }

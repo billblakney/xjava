@@ -26,7 +26,10 @@ public class XTreeTableView2 extends Application {
   public static void main(String[] args) {
     Application.launch(args);
   }
-  @Override
+  /* (non-Javadoc)
+ * @see javafx.application.Application#start(javafx.stage.Stage)
+ */
+@Override
   public void start(Stage stage) {
     final Scene scene = new Scene(new Group(), 400, 300);
     Group sceneRoot = (Group) scene.getRoot();
@@ -38,21 +41,21 @@ public class XTreeTableView2 extends Application {
     root.setExpanded(true);
     
     TreeItem<TableEntry> groupA = new TreeItem<>(
-          new TableEntry(0,"Group A",10.0,new BigDecimal("9.99")));
+          new TableEntry(0,"Group A",10.0,new BigDecimal("9.99"),true));
     
     TreeItem<TableEntry> groupB = new TreeItem<>(
-          new TableEntry(0,"Group B",99.0,new BigDecimal("0.00")));
+          new TableEntry(0,"Group B",99.0,new BigDecimal("0.00"),true));
     /*
      * Create the child items, and add them to root.
      */
     TreeItem<TableEntry> tChild1 = new TreeItem<>(
-          new TableEntry(1,"Joe",10.0,new BigDecimal("9.99")));
+          new TableEntry(1,"Joe",10.0,new BigDecimal("9.99"),true));
     TreeItem<TableEntry> tChild2 = new TreeItem<>(
-          new TableEntry(2,"Mary",99.0,new BigDecimal("7.99")));
+          new TableEntry(2,"Mary",99.0,new BigDecimal("7.99"),true));
     TreeItem<TableEntry> tChild3 = new TreeItem<>(
-          new TableEntry(3,"Harris",45.3,new BigDecimal("11.99")));
+          new TableEntry(3,"Harris",45.3,new BigDecimal("11.99"),true));
     TreeItem<TableEntry> tChild4 = new TreeItem<>(
-          new TableEntry(3,"Tanya",33.3,new BigDecimal("33.99")));
+          new TableEntry(3,"Tanya",33.3,new BigDecimal("33.99"),true));
 
     groupA.getChildren().setAll(tChild1, tChild2, tChild3);
 
@@ -107,7 +110,7 @@ public class XTreeTableView2 extends Application {
     if (useShortWay == true)
     {
        valueColumn.setCellValueFactory((p)-> 
-       p.getValue().getValue().valueProperty().asObject()
+       p.getValue().getValue().ratingProperty().asObject()
              );
     }
     else
@@ -119,7 +122,7 @@ public class XTreeTableView2 extends Application {
                 {
                    // ?Note: SimpleDoubleProperty implements ObservableValue<Number>,
                    // so must use this workaround.
-                   return p.getValue().getValue().valueProperty().asObject();
+                   return p.getValue().getValue().ratingProperty().asObject();
                 }
              });
     }
@@ -132,23 +135,23 @@ public class XTreeTableView2 extends Application {
     /*
      * Create the big decimal column. Set it up to support editing.
      */
-    TreeTableColumn<TableEntry,BigDecimal> amountColumn =
-          new TreeTableColumn<>("Amount");
-    amountColumn.setPrefWidth(100);
-    amountColumn.setCellValueFactory((p)-> {
-          return p.getValue().getValue().amountProperty(); });
+    TreeTableColumn<TableEntry,BigDecimal> bonusColumn =
+          new TreeTableColumn<>("Bonus");
+    bonusColumn.setPrefWidth(100);
+    bonusColumn.setCellValueFactory((p)-> {
+          return p.getValue().getValue().bonusProperty(); });
     
     // Add this to support editing. Otherwise, not needed.
     boolean useUpdateItem = true;
     if (!useUpdateItem)
     {
-       amountColumn.setCellFactory(
+       bonusColumn.setCellFactory(
           TextFieldTreeTableCell.<TableEntry,BigDecimal>forTreeTableColumn(
              new BigDecimalStringConverter()));
     }
     else
     {
-       amountColumn.setCellFactory((p)-> {
+       bonusColumn.setCellFactory((p)-> {
           return new TextFieldTreeTableCell<TableEntry,BigDecimal>(
                 new BigDecimalStringConverter()) // need the converter to edit
           {
@@ -188,11 +191,11 @@ public class XTreeTableView2 extends Application {
     treeTableView.setEditable(true);
     nameColumn.setEditable(true);
     valueColumn.setEditable(true);
-    amountColumn.setEditable(true);
+    bonusColumn.setEditable(true);
     treeTableView.getColumns().add(idColumn);
     treeTableView.getColumns().add(nameColumn);
     treeTableView.getColumns().add(valueColumn);
-    treeTableView.getColumns().add(amountColumn);
+    treeTableView.getColumns().add(bonusColumn);
     sceneRoot.getChildren().add(treeTableView);
     stage.setScene(scene);
     stage.show();
