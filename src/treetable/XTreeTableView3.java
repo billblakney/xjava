@@ -40,6 +40,7 @@ public class XTreeTableView3 extends Application implements
   Vector<TreeItem<TableEntry>> group2 = new Vector<TreeItem<TableEntry>>();
 
   Binding<Double> ratingsTotal;
+  TreeItem<TableEntry> groupB;
 
   TreeItem<TableEntry> tChild4;
 
@@ -112,7 +113,7 @@ public class XTreeTableView3 extends Application implements
     System.out.println("SUM=" + ratingsTotal.getValue().toString());
 //---------------------------------      
 
-    TreeItem<TableEntry> groupB = new TreeItem<>(
+    groupB = new TreeItem<>(
           new TableEntry(0,"Group B",ratingsTotal.getValue(),new BigDecimal("0.00"),true,1));
     //TODO fix ctor workaround
 
@@ -283,6 +284,7 @@ public class XTreeTableView3 extends Application implements
   public void changed(ObservableValue o,Object oldVal, Object newVal)
   {
      System.out.println("new ratingsTotal value: " + ratingsTotal.getValue());
+     groupB.getValue().setRating(ratingsTotal.getValue());
   }
 
   @Override

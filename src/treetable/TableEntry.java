@@ -113,7 +113,7 @@ System.out.println("XXXXXXXXXXXXXXXXX");
      return rating.get();
    }
 
-   public void setValue(double fName) {
+   public void setRating(double fName) {
      rating.set(fName);
    }
 
