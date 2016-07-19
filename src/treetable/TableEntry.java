@@ -12,38 +12,37 @@ public class TableEntry
 {
    private SimpleIntegerProperty id;
 
-   private SimpleStringProperty name;
+   private SimpleStringProperty someString;
 
-   private SimpleDoubleProperty rating;
+   private SimpleDoubleProperty someDouble;
 
-   private SimpleObjectProperty<BigDecimal> bonus;
+   private SimpleObjectProperty<BigDecimal> someBigDecimal;
    
-   private SimpleBooleanProperty award;
+   private SimpleBooleanProperty someBoolean;
 
    public TableEntry()
    {
    }
 
 //TODO IP
-   public TableEntry(Integer id, String name, Double rating, BigDecimal bonus,
-         boolean award,int x)
+   public TableEntry(Integer id, String someString, Double someDouble,
+         BigDecimal someBigDecimal, boolean award,int x)
    {
-System.out.println("XXXXXXXXXXXXXXXXX");
      this.id = new SimpleIntegerProperty(id);
-     this.name = new SimpleStringProperty(name);
-     this.rating = new SimpleDoubleProperty(rating);
-     this.bonus = new SimpleObjectProperty(bonus);
-     this.award = new SimpleBooleanProperty(award);
+     this.someString = new SimpleStringProperty(someString);
+     this.someDouble = new SimpleDoubleProperty(someDouble);
+     this.someBigDecimal = new SimpleObjectProperty(someBigDecimal);
+     this.someBoolean = new SimpleBooleanProperty(award);
    }
 
-   public TableEntry(Integer id, String name, double rating, BigDecimal bonus,
-         boolean award)
+   public TableEntry(Integer id, String someString, double someDouble, BigDecimal someBigDecimal,
+         boolean someBoolean)
    {
      this.id = new SimpleIntegerProperty(id);
-     this.name = new SimpleStringProperty(name);
-     this.rating = new SimpleDoubleProperty(rating);
-     this.bonus = new SimpleObjectProperty(bonus);
-     this.award = new SimpleBooleanProperty(award);
+     this.someString = new SimpleStringProperty(someString);
+     this.someDouble = new SimpleDoubleProperty(someDouble);
+     this.someBigDecimal = new SimpleObjectProperty(someBigDecimal);
+     this.someBoolean = new SimpleBooleanProperty(someBoolean);
    }
    
    @Override
@@ -51,10 +50,10 @@ System.out.println("XXXXXXXXXXXXXXXXX");
    {
       StringBuilder tBuilder = new StringBuilder();
       tBuilder.append("id=" + getId() + ",");
-      tBuilder.append("name=" + getName() + ",");
-      tBuilder.append("rating=" + getRating() + ",");
-      tBuilder.append("bonus=" + getBonus() + ",");
-      tBuilder.append("award=" + getAward());
+      tBuilder.append("someString=" + getSomeString() + ",");
+      tBuilder.append("someDouble=" + getSomeDouble() + ",");
+      tBuilder.append("someBigDecimal=" + getSomeBigDecimal() + ",");
+      tBuilder.append("someBoolean=" + getSomeBoolean());
       return tBuilder.toString();
    }
 
@@ -65,32 +64,32 @@ System.out.println("XXXXXXXXXXXXXXXXX");
      return id;
    }
 
-   public SimpleStringProperty nameProperty() {
-     if (name == null) {
-       name = new SimpleStringProperty(this, "name");
+   public SimpleStringProperty someStringProperty() {
+     if (someString == null) {
+       someString = new SimpleStringProperty(this, "someString");
      }
-     return name;
+     return someString;
    }
 
-   public SimpleDoubleProperty ratingProperty() {
-     if (rating == null) {
-       rating = new SimpleDoubleProperty(this, "rating");
+   public SimpleDoubleProperty someDoubleProperty() {
+     if (someDouble == null) {
+       someDouble = new SimpleDoubleProperty(this, "someDouble");
      }
-     return rating;
+     return someDouble;
    }
 
-   public SimpleObjectProperty<BigDecimal> bonusProperty() {
-     if (bonus == null) {
-       bonus = new SimpleObjectProperty<BigDecimal>(this, "0.0");
+   public SimpleObjectProperty<BigDecimal> someBigDecimalProperty() {
+     if (someBigDecimal == null) {
+       someBigDecimal = new SimpleObjectProperty<BigDecimal>(this, "0.0");
      }
-     return bonus;
+     return someBigDecimal;
    }
 
-   public SimpleBooleanProperty awardProperty() {
-     if (award == null) {
-       award = new SimpleBooleanProperty(this, "award");
+   public SimpleBooleanProperty someBooleanProperty() {
+     if (someBoolean == null) {
+       someBoolean = new SimpleBooleanProperty(this, "someBoolean");
      }
-     return award;
+     return someBoolean;
    }
 
    public Integer getId() {
@@ -101,35 +100,35 @@ System.out.println("XXXXXXXXXXXXXXXXX");
      id.set(fName);
    }
 
-   public String getName() {
-     return name.get();
+   public String getSomeString() {
+     return someString.get();
    }
 
-   public void setName(String fName) {
-     name.set(fName);
+   public void setSomeString(String fName) {
+     someString.set(fName);
    }
 
-   public double getRating() {
-     return rating.get();
+   public double getSomeDouble() {
+     return someDouble.get();
    }
 
-   public void setRating(double fName) {
-     rating.set(fName);
+   public void setSomeDouble(double fName) {
+     someDouble.set(fName);
    }
 
-   public BigDecimal getBonus() {
-     return bonus.getValue();
+   public BigDecimal getSomeBigDecimal() {
+     return someBigDecimal.getValue();
    }
 
-   public void setBonus(BigDecimal fName) {
-     bonus.set(fName);
+   public void setSomeBigDecimal(BigDecimal fName) {
+     someBigDecimal.set(fName);
    }
 
-   public Boolean getAward() {
-     return award.getValue();
+   public Boolean getSomeBoolean() {
+     return someBoolean.getValue();
    }
 
-   public void setAward(Boolean fName) {
-     award.set(fName);
+   public void setSomeBoolean(Boolean fName) {
+     someBoolean.set(fName);
    }
 }

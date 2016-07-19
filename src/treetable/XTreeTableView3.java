@@ -95,7 +95,7 @@ public class XTreeTableView3 extends Application implements
     ObservableList<SimpleDoubleProperty> ratings;
 
     ratings = EasyBind.map(observableItems, (treeitem) -> {
-       return treeitem.getValue().ratingProperty();
+       return treeitem.getValue().someDoubleProperty();
     });
 
     for (SimpleDoubleProperty tInt: ratings)
@@ -148,7 +148,7 @@ public class XTreeTableView3 extends Application implements
     /*
      * Create the name column. Set it up to support editing.
      */
-    TreeTableColumn<TableEntry,String> nameColumn = new TreeTableColumn<>("Name");
+    TreeTableColumn<TableEntry,String> nameColumn = new TreeTableColumn<>("Some String");
     nameColumn.setPrefWidth(100);
     nameColumn.setCellValueFactory(
        new Callback<CellDataFeatures<TableEntry,String>,ObservableValue<String>>()
@@ -156,7 +156,7 @@ public class XTreeTableView3 extends Application implements
           @Override public ObservableValue<String>
           call(CellDataFeatures<TableEntry,String> p)
           {
-             return p.getValue().getValue().nameProperty();
+             return p.getValue().getValue().someStringProperty();
           }
        }
      );
@@ -167,14 +167,14 @@ public class XTreeTableView3 extends Application implements
     /*
      * Create the value column. Set it up to support editing.
      */
-    TreeTableColumn<TableEntry,Double> valueColumn = new TreeTableColumn<>("Value");
+    TreeTableColumn<TableEntry,Double> valueColumn = new TreeTableColumn<>("Some Double");
     valueColumn.setPrefWidth(100);
 
     boolean useShortWay = false;
     if (useShortWay == true)
     {
        valueColumn.setCellValueFactory((p)-> 
-       p.getValue().getValue().ratingProperty().asObject()
+       p.getValue().getValue().someDoubleProperty().asObject()
              );
     }
     else
@@ -186,7 +186,7 @@ public class XTreeTableView3 extends Application implements
                 {
                    // ?Note: SimpleDoubleProperty implements ObservableValue<Number>,
                    // so must use this workaround.
-                   return p.getValue().getValue().ratingProperty().asObject();
+                   return p.getValue().getValue().someDoubleProperty().asObject();
                 }
              });
     }
@@ -203,7 +203,7 @@ public class XTreeTableView3 extends Application implements
           new TreeTableColumn<>("Bonus");
     bonusColumn.setPrefWidth(100);
     bonusColumn.setCellValueFactory((p)-> {
-          return p.getValue().getValue().bonusProperty(); });
+          return p.getValue().getValue().someBigDecimalProperty(); });
     
     // Add this to support editing. Otherwise, not needed.
     boolean useUpdateItem = true;
@@ -251,8 +251,8 @@ public class XTreeTableView3 extends Application implements
      * Create the boolean column.
      */
     TreeTableColumn<TableEntry,Boolean> awardColumn =
-          new TreeTableColumn<>( "Award" );
-    awardColumn.setCellValueFactory((p)-> p.getValue().getValue().awardProperty());
+          new TreeTableColumn<>( "Some Boolean" );
+    awardColumn.setCellValueFactory((p)-> p.getValue().getValue().someBooleanProperty());
     awardColumn.setCellFactory(CheckBoxTreeTableCell.forTreeTableColumn(awardColumn));
     
     /*
@@ -284,7 +284,7 @@ public class XTreeTableView3 extends Application implements
   public void changed(ObservableValue o,Object oldVal, Object newVal)
   {
      System.out.println("new ratingsTotal value: " + ratingsTotal.getValue());
-     groupB.getValue().setRating(ratingsTotal.getValue());
+     groupB.getValue().setSomeDouble(ratingsTotal.getValue());
   }
 
   @Override

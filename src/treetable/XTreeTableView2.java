@@ -116,7 +116,7 @@ public class XTreeTableView2 extends Application implements EventHandler<ActionE
           @Override public ObservableValue<String>
           call(CellDataFeatures<TableEntry,String> p)
           {
-             return p.getValue().getValue().nameProperty();
+             return p.getValue().getValue().someStringProperty();
           }
        }
      );
@@ -134,7 +134,7 @@ public class XTreeTableView2 extends Application implements EventHandler<ActionE
     if (useShortWay == true)
     {
        valueColumn.setCellValueFactory((p)-> 
-       p.getValue().getValue().ratingProperty().asObject()
+       p.getValue().getValue().someDoubleProperty().asObject()
              );
     }
     else
@@ -146,7 +146,7 @@ public class XTreeTableView2 extends Application implements EventHandler<ActionE
                 {
                    // ?Note: SimpleDoubleProperty implements ObservableValue<Number>,
                    // so must use this workaround.
-                   return p.getValue().getValue().ratingProperty().asObject();
+                   return p.getValue().getValue().someDoubleProperty().asObject();
                 }
              });
     }
@@ -163,7 +163,7 @@ public class XTreeTableView2 extends Application implements EventHandler<ActionE
           new TreeTableColumn<>("Bonus");
     bonusColumn.setPrefWidth(100);
     bonusColumn.setCellValueFactory((p)-> {
-          return p.getValue().getValue().bonusProperty(); });
+          return p.getValue().getValue().someBigDecimalProperty(); });
     
     // Add this to support editing. Otherwise, not needed.
     boolean useUpdateItem = true;
@@ -212,7 +212,7 @@ public class XTreeTableView2 extends Application implements EventHandler<ActionE
      */
     TreeTableColumn<TableEntry,Boolean> awardColumn =
           new TreeTableColumn<>( "Award" );
-    awardColumn.setCellValueFactory((p)-> p.getValue().getValue().awardProperty());
+    awardColumn.setCellValueFactory((p)-> p.getValue().getValue().someBooleanProperty());
     awardColumn.setCellFactory(CheckBoxTreeTableCell.forTreeTableColumn(awardColumn));
     
     /*
